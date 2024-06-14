@@ -1,0 +1,40 @@
+version: '4.31'
+
+services:
+  mysql:
+    image: mariadb:11.4.2
+    container_name: mariadb
+    restart: unless-stopped
+    environment:
+      MARIADB_ROOT_PASSWORD: '123456'
+      MARIADB_DATABASE: TEST_DB
+      MARIADB_USER: TEST_DB
+      MARIADB_PASSWORD: '123456'
+    volumes:
+      - sql_volume:/var/lib/mysql
+    networks:
+      - sqlnetwork
+    ports:
+      - 3037:3036
+
+  phpmyadmin:
+    image: phpmyadmin
+    container_name: phpmyadmin
+    environment:
+     - PMA_ARBITRARY=1
+    restart: always
+    ports:
+     - 8085:80
+    volumes:
+     - /sessions
+    networks:
+     - sqlnetwork
+    
+
+volumes:
+  sql_volume:
+
+
+networks:
+  sqlnetwork:
+
